@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid');
+
 const HttpError = require('../models/http-error');
 
 const DUMMY_USERS = [
@@ -7,6 +9,7 @@ const DUMMY_USERS = [
     password: 'password',
     email: 'user1@example.com',
     avatar: 'https://pickaface.net/gallery/avatar/20160625_050020_889_FAKE.png',
+    createTime: '1596017863',
   },
 ];
 
@@ -29,5 +32,25 @@ const getUserByUid = (req, res, next) => {
   res.json({ user });
 };
 
+const createUser = (req, res, next) => {
+  // uid is not extracted from req.body since uuid() will allocate one
+  const {
+    username, password, email, avatar, createTime,
+  } = req.body;
+  const createdUser = {
+    uid: uuidv4(),
+    username,
+    password,
+    email,
+    avatar,
+    createTime,
+  };
+
+  DUMMY_USERS.push(createdUser);
+
+  res.status(201).json({ comment: createdUser });
+};
+
 exports.getUsers = getUsers;
 exports.getUserByUid = getUserByUid;
+exports.createUser = createUser;

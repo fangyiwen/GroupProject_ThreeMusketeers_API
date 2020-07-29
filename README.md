@@ -20,3 +20,4 @@ https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-gui
 * Build REST API as backend API server by Node.js and Express. Add routing and relative routes. ESLint is used to make up JavaScript code. Note: `|| exit 0` in `"lint": "eslint . || exit 0"` is used to hide the exit status which is not important.
 * Handle errors for http requests by creating HttpError class inherited from Error. Http requests are tested by Postman.
 * Add controllers to make `xxx-routes.js` files more organized.
+* Add POST route to create comment and user. `uuid` is used to create a unique uid for the user.

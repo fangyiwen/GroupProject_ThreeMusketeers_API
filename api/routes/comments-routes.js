@@ -10,4 +10,6 @@ router.get('/places/:pid', commentsControllers.getCommentsByPid);
 
 router.get('/users/:uid', commentsControllers.getCommentsByUid);
 
+router.post('/', commentsControllers.createComment);
+
 module.exports = router;

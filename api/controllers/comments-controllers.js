@@ -40,6 +40,24 @@ const getCommentsByUid = (req, res, next) => {
   res.json({ comments });
 };
 
+const createComment = (req, res, next) => {
+  const {
+    pid, text, images, uid, createTime,
+  } = req.body;
+  const createdComment = {
+    pid,
+    text,
+    images,
+    uid,
+    createTime,
+  };
+
+  DUMMY_COMMENTS.push(createdComment);
+
+  res.status(201).json({ comment: createdComment });
+};
+
 exports.getComments = getComments;
 exports.getCommentsByPid = getCommentsByPid;
 exports.getCommentsByUid = getCommentsByUid;
+exports.createComment = createComment;
