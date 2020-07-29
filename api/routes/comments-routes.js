@@ -1,4 +1,5 @@
 const express = require('express');
+const { check } = require('express-validator');
 
 const commentsControllers = require('../controllers/comments-controllers');
 
@@ -10,9 +11,9 @@ router.get('/places/:pid', commentsControllers.getCommentsByPid);
 
 router.get('/users/:uid', commentsControllers.getCommentsByUid);
 
-router.post('/', commentsControllers.createComment);
+router.post('/places/:pid', check('text').not().isEmpty(), commentsControllers.createComment);
 
-router.patch('/:cid', commentsControllers.updateComment);
+router.patch('/:cid', check('text').not().isEmpty(), commentsControllers.updateComment);
 
 router.delete('/:cid', commentsControllers.deleteComment);
 

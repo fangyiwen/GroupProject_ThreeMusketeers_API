@@ -22,3 +22,4 @@ https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-gui
 * Add controllers to make `xxx-routes.js` files more organized.
 * Add POST routes to create comment and user. `uuid` is used to create a unique uid for the user.
 * Add PATCH routes to update and DELETE routes to delete.
+* Add validations for request bodies by using `express-validator`.

@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
+const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error');
 
@@ -33,6 +34,11 @@ const getUserByUid = (req, res, next) => {
 };
 
 const signup = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError('Invalid inputs.', 422);
+  }
+
   // uid is not extracted from req.body since uuid() will allocate one
   const {
     username, password, email, avatar, createTime,
@@ -74,6 +80,11 @@ const login = (req, res, next) => {
 };
 
 const updateUser = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError('Invalid inputs.', 422);
+  }
+
   const {
     username, password, email, avatar,
   } = req.body;
@@ -93,6 +104,10 @@ const updateUser = (req, res, next) => {
 
 const deleteUser = (req, res, next) => {
   const userId = req.params.uid;
+  if (!DUMMY_USERS.find(u => u.id === userId)) {
+    throw new HttpError('No user found.', 404);
+  }
+
   DUMMY_USERS = DUMMY_USERS.filter(u => u.uid !== userId);
   res.status(200).json({ message: 'Delete comment.' });
 };

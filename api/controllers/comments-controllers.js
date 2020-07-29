@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
+const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error');
 
@@ -44,12 +45,18 @@ const getCommentsByUid = (req, res, next) => {
 };
 
 const createComment = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError('Invalid inputs.', 422);
+  }
+
+  const placeId = req.params.pid;
   const {
-    pid, text, images, uid, createTime,
+    text, images, uid, createTime,
   } = req.body;
   const createdComment = {
     cid: uuidv4(),
-    pid,
+    pid: placeId,
     text,
     images,
     uid,
@@ -62,6 +69,11 @@ const createComment = (req, res, next) => {
 };
 
 const updateComment = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError('Invalid inputs.', 422);
+  }
+
   const { text, images } = req.body;
   const commentId = req.params.cid;
 
@@ -77,6 +89,10 @@ const updateComment = (req, res, next) => {
 
 const deleteComment = (req, res, next) => {
   const commentId = req.params.cid;
+  if (!DUMMY_COMMENTS.find(c => c.id === commentId)) {
+    throw new HttpError('No comment found.', 404);
+  }
+
   DUMMY_COMMENTS = DUMMY_COMMENTS.filter(c => c.cid !== commentId);
   res.status(200).json({ message: 'Delete comment.' });
 };
