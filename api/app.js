@@ -14,11 +14,11 @@ app.use('/api/comments', commentsRoutes);
 
 app.use((error, req, res, next) => {
   if (res.headerSent) {
-    return next(error);
+    next(error);
+  } else {
+    res.status(error.code || 404);
+    res.json({ message: error.message || 'Error occurred.' });
   }
-
-  res.status(error.code || 404);
-  res.json({ message: error.message || 'Error occurred.' });
 });
 
 app.listen(8000);
