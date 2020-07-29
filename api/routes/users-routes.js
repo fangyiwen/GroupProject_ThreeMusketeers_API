@@ -1,5 +1,7 @@
 const express = require('express');
 
+const HttpError = require('../models/http-error');
+
 const router = express.Router();
 
 const DUMMY_USERS = [
@@ -22,16 +24,34 @@ const DUMMY_COMMENTS = [
   },
 ];
 
-router.get('/:uid/comments', (req, res, next) => {
-  const userId = req.params.uid;
-  const comments = DUMMY_COMMENTS.filter(c => c.uid === userId);
-  res.json({ comments });
+router.get('/', (req, res, next) => {
+  if (DUMMY_USERS.length === 0) {
+    throw new HttpError('No users found.', 404);
+  }
+
+  res.json({ places: DUMMY_USERS });
 });
 
 router.get('/:uid', (req, res, next) => {
   const userId = req.params.uid;
   const user = DUMMY_USERS.find(u => u.uid === userId);
+
+  if (!user) {
+    throw new HttpError('No user found.', 404);
+  }
+
   res.json({ user });
+});
+
+router.get('/:uid/comments', (req, res, next) => {
+  const userId = req.params.uid;
+  const comments = DUMMY_COMMENTS.filter(c => c.uid === userId);
+
+  if (comments.length === 0) {
+    throw new HttpError('No comments found.', 404);
+  }
+
+  res.json({ comments });
 });
 
 module.exports = router;

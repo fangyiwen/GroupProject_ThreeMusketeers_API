@@ -1,5 +1,7 @@
 const express = require('express');
 
+const HttpError = require('../models/http-error');
+
 const router = express.Router();
 
 const DUMMY_COMMENTS = [
@@ -13,6 +15,10 @@ const DUMMY_COMMENTS = [
 ];
 
 router.get('/', (req, res, next) => {
+  if (DUMMY_COMMENTS.length === 0) {
+    throw new HttpError('No comments found.', 404);
+  }
+
   res.json({ comments: DUMMY_COMMENTS });
 });
 

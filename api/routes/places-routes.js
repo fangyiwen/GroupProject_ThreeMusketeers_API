@@ -1,5 +1,7 @@
 const express = require('express');
 
+const HttpError = require('../models/http-error');
+
 const router = express.Router();
 
 const DUMMY_PLACES = [
@@ -24,20 +26,34 @@ const DUMMY_COMMENTS = [
   },
 ];
 
-router.get('/:pid/comments', (req, res, next) => {
-  const placeId = req.params.pid;
-  const comments = DUMMY_COMMENTS.filter(c => c.pid === placeId);
-  res.json({ comments });
+router.get('/', (req, res, next) => {
+  if (DUMMY_PLACES.length === 0) {
+    throw new HttpError('No places found.', 404);
+  }
+
+  res.json({ places: DUMMY_PLACES });
 });
 
 router.get('/:pid', (req, res, next) => {
   const placeId = req.params.pid;
   const place = DUMMY_PLACES.find(p => p.pid === placeId);
+
+  if (!place) {
+    throw new HttpError('No place found.', 404);
+  }
+
   res.json({ place });
 });
 
-router.get('/', (req, res, next) => {
-  res.json({ places: DUMMY_PLACES });
+router.get('/:pid/comments', (req, res, next) => {
+  const placeId = req.params.pid;
+  const comments = DUMMY_COMMENTS.filter(c => c.pid === placeId);
+
+  if (comments.length === 0) {
+    throw new HttpError('No comments found.', 404);
+  }
+
+  res.json({ comments });
 });
 
 module.exports = router;
