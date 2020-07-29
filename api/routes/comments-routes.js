@@ -12,4 +12,8 @@ router.get('/users/:uid', commentsControllers.getCommentsByUid);
 
 router.post('/', commentsControllers.createComment);
 
+router.patch('/:cid', commentsControllers.updateComment);
+
+router.delete('/:cid', commentsControllers.deleteComment);
+
 module.exports = router;

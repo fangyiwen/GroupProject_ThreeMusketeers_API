@@ -13,7 +13,7 @@ const DUMMY_PLACES = [
 ];
 
 const getPlaces = (req, res, next) => {
-  if (DUMMY_PLACES.length === 0) {
+  if (!DUMMY_PLACES || DUMMY_PLACES.length === 0) {
     throw new HttpError('No places found.', 404);
   }
 
