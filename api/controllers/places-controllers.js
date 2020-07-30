@@ -1,34 +1,40 @@
 const HttpError = require('../models/http-error');
+const Place = require('../models/place');
 
-const DUMMY_PLACES = [
-  {
-    pid: 'p1',
-    world_heritage_list: {
-      name: 'Empire State Building',
-      description: 'One of the most famous sky scrapers in the world!',
-      latitude: 40.7484474,
-      longitude: -73.9871516,
-    },
-  },
-];
-
-const getPlaces = (req, res, next) => {
-  if (!DUMMY_PLACES || DUMMY_PLACES.length === 0) {
-    throw new HttpError('No places found.', 404);
+const getPlaces = async (req, res, next) => {
+  let places;
+  try {
+    places = await Place.find();
+  } catch (err) {
+    const error = new HttpError('Fetching places failed.', 500);
+    return next(error);
   }
 
-  res.json({ places: DUMMY_PLACES });
+  if (!places || places.length === 0) {
+    const error = new HttpError('No places found.', 404);
+    return next(error);
+  }
+
+  res.json({ places: places.map(place => place.toObject({ getters: true })) });
 };
 
-const getPlaceByPid = (req, res, next) => {
+const getPlaceByPid = async (req, res, next) => {
   const placeId = req.params.pid;
-  const place = DUMMY_PLACES.find(p => p.pid === placeId);
 
-  if (!place) {
-    throw new HttpError('No place found.', 404);
+  let place;
+  try {
+    place = await Place.findOne({ pid: placeId });
+  } catch (err) {
+    const error = new HttpError('Could not find a place.', 500);
+    return next(error);
   }
 
-  res.json({ place });
+  if (!place) {
+    const error = new HttpError('No place found.', 404);
+    return next(error);
+  }
+
+  res.json({ place: place.toObject({ getters: true }) });
 };
 
 exports.getPlaces = getPlaces;

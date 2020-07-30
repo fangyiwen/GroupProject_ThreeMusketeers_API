@@ -2,99 +2,146 @@ const { v4: uuidv4 } = require('uuid');
 const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error');
+const Comment = require('../models/comment');
 
-let DUMMY_COMMENTS = [
-  {
-    cid: 'c1',
-    pid: 'p1',
-    text: 'I love this good place!',
-    images: ['https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/250px-Empire_State_Building_%28aerial_view%29.jpg', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/NARA_Empire_State_Building.jpg/220px-NARA_Empire_State_Building.jpg'],
-    uid: 'user1',
-    createTime: '1596017863',
-  },
-];
-
-const getComments = (req, res, next) => {
-  if (!DUMMY_COMMENTS || DUMMY_COMMENTS.length === 0) {
-    throw new HttpError('No comments found.', 404);
+const getComments = async (req, res, next) => {
+  let comments;
+  try {
+    comments = await Comment.find();
+  } catch (err) {
+    const error = new HttpError('Fetching comments failed.', 500);
+    return next(error);
   }
 
-  res.json({ comments: DUMMY_COMMENTS });
+  if (!comments || comments.length === 0) {
+    const error = new HttpError('No comments found.', 404);
+    return next(error);
+  }
+
+  res.json({ comments: comments.map(comment => comment.toObject({ getters: true })) });
 };
 
-const getCommentsByPid = (req, res, next) => {
+const getCommentsByPid = async (req, res, next) => {
   const placeId = req.params.pid;
-  const comments = DUMMY_COMMENTS.filter(c => c.pid === placeId);
 
-  if (!comments || comments.length === 0) {
-    throw new HttpError('No comments found.', 404);
+  let comments;
+  try {
+    comments = await Comment.find({ pid: placeId });
+  } catch (err) {
+    const error = new HttpError('Could not find comments.', 500);
+    return next(error);
   }
 
-  res.json({ comments });
+  if (!comments || comments.length === 0) {
+    const error = new HttpError('No comments found.', 404);
+    return next(error);
+  }
+
+  res.json({ comments: comments.map(comment => comment.toObject({ getters: true })) });
 };
 
-const getCommentsByUid = (req, res, next) => {
+const getCommentsByUid = async (req, res, next) => {
   const userId = req.params.uid;
-  const comments = DUMMY_COMMENTS.filter(c => c.uid === userId);
 
-  if (!comments || comments.length === 0) {
-    throw new HttpError('No comments found.', 404);
+  let comments;
+  try {
+    comments = await Comment.find({ uid: userId });
+  } catch (err) {
+    const error = new HttpError('Could not find comments.', 500);
+    return next(error);
   }
 
-  res.json({ comments });
+  if (!comments || comments.length === 0) {
+    const error = new HttpError('No comments found.', 404);
+    return next(error);
+  }
+
+  res.json({ comments: comments.map(comment => comment.toObject({ getters: true })) });
 };
 
-const createComment = (req, res, next) => {
+const createComment = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs.', 422);
+    const error = new HttpError('Invalid inputs.', 422);
+    return next(error);
   }
 
   const placeId = req.params.pid;
   const {
     text, images, uid, createTime,
   } = req.body;
-  const createdComment = {
+
+  const createdComment = new Comment({
     cid: uuidv4(),
     pid: placeId,
     text,
     images,
     uid,
     createTime,
-  };
+  });
 
-  DUMMY_COMMENTS.push(createdComment);
+  try {
+    await createdComment.save();
+  } catch (err) {
+    const error = new HttpError('Creating comment failed.', 500);
+    return next(error);
+  }
 
   res.status(201).json({ comment: createdComment });
 };
 
-const updateComment = (req, res, next) => {
+const updateComment = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs.', 422);
+    const error = new HttpError('Invalid inputs.', 422);
+    return next(error);
   }
 
   const { text, images } = req.body;
   const commentId = req.params.cid;
 
-  const updatedComment = { ...DUMMY_COMMENTS.find(c => c.cid === commentId) };
-  const commentIndex = DUMMY_COMMENTS.findIndex(c => c.cid === commentId);
-  updatedComment.text = text;
-  updatedComment.images = images;
-
-  DUMMY_COMMENTS[commentIndex] = updatedComment;
-
-  res.status(200).json({ comment: updatedComment });
-};
-
-const deleteComment = (req, res, next) => {
-  const commentId = req.params.cid;
-  if (!DUMMY_COMMENTS.find(c => c.id === commentId)) {
-    throw new HttpError('No comment found.', 404);
+  let comment;
+  try {
+    comment = await Comment.findOne({ cid: commentId });
+  } catch (err) {
+    const error = new HttpError('Update comment failed.', 500);
+    return next(error);
   }
 
-  DUMMY_COMMENTS = DUMMY_COMMENTS.filter(c => c.cid !== commentId);
-  res.status(200).json({ message: 'Delete comment.' });
+  comment.text = text;
+  comment.images = images;
+
+  try {
+    await comment.save();
+  } catch (err) {
+    const error = new HttpError(
+      'Update place failed.',
+      500,
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ comment: comment.toObject({ getters: true }) });
+};
+
+const deleteComment = async (req, res, next) => {
+  const commentId = req.params.cid;
+  let comment;
+  try {
+    comment = await Comment.findOne({ cid: commentId });
+  } catch (err) {
+    const error = new HttpError('Delete comment failed.', 500);
+    return next(error);
+  }
+
+  try {
+    await comment.remove();
+  } catch (err) {
+    const error = new HttpError('Delete comment failed.', 500);
+    return next(error);
+  }
+
+  res.status(200).json({ message: 'Deleted comment.' });
 };
 
 exports.getComments = getComments;

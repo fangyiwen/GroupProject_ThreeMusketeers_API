@@ -1,42 +1,52 @@
 const { v4: uuidv4 } = require('uuid');
 const { validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 
 const HttpError = require('../models/http-error');
+const User = require('../models/user');
+const Comment = require('../models/comment');
 
-let DUMMY_USERS = [
-  {
-    uid: 'user1',
-    username: 'user1',
-    password: 'password',
-    email: 'user1@example.com',
-    avatar: 'https://pickaface.net/gallery/avatar/20160625_050020_889_FAKE.png',
-    createTime: '1596017863',
-  },
-];
-
-const getUsers = (req, res, next) => {
-  if (!DUMMY_USERS || DUMMY_USERS.length === 0) {
-    throw new HttpError('No users found.', 404);
+const getUsers = async (req, res, next) => {
+  let users;
+  try {
+    users = await User.find({}, '-password');
+  } catch (err) {
+    const error = new HttpError('Fetching users failed.', 500);
+    return next(error);
   }
 
-  res.json({ users: DUMMY_USERS });
+  if (!users || users.length === 0) {
+    const error = new HttpError('No places found.', 404);
+    return next(error);
+  }
+
+  res.json({ users: users.map(user => user.toObject({ getters: true })) });
 };
 
-const getUserByUid = (req, res, next) => {
+const getUserByUid = async (req, res, next) => {
   const userId = req.params.uid;
-  const user = DUMMY_USERS.find(u => u.uid === userId);
+
+  let user;
+  try {
+    user = await User.findOne({ uid: userId });
+  } catch (err) {
+    const error = new HttpError('Could not find user.', 500);
+    return next(error);
+  }
 
   if (!user) {
-    throw new HttpError('No user found.', 404);
+    const error = new HttpError('No user found.', 404);
+    return next(error);
   }
 
-  res.json({ user });
+  res.json({ user: user.toObject({ getters: true }) });
 };
 
-const signup = (req, res, next) => {
+const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs.', 422);
+    const error = new HttpError('Invalid inputs.', 422);
+    return next(error);
   }
 
   // uid is not extracted from req.body since uuid() will allocate one
@@ -44,45 +54,77 @@ const signup = (req, res, next) => {
     username, password, email, avatar, createTime,
   } = req.body;
 
-  const hasEmail = DUMMY_USERS.find(u => u.email === email && u.username === username);
-  if (hasEmail) {
-    throw new HttpError('Failed. Email already exists.', 422);
+  // Check existing mail
+  let existingEmail;
+  try {
+    existingEmail = await User.findOne({ email });
+  } catch (err) {
+    const error = new HttpError('Signing up failed.', 500);
+    return next(error);
   }
 
-  const hasUsername = DUMMY_USERS.find(u => u.username === username);
-  if (hasUsername) {
-    throw new HttpError('Failed. Username already exists.', 422);
+  if (existingEmail) {
+    const error = new HttpError('Email exists already.', 422);
+    return next(error);
   }
 
-  const createdUser = {
+  // Check existing username
+  let existingUsername;
+  try {
+    existingUsername = await User.findOne({ username });
+  } catch (err) {
+    const error = new HttpError('Signing up failed.', 500);
+    return next(error);
+  }
+
+  if (existingUsername) {
+    const error = new HttpError('Username exists already.', 422);
+    return next(error);
+  }
+
+  const createdUser = new User({
     uid: uuidv4(),
     username,
     password,
     email,
     avatar,
     createTime,
-  };
+  });
 
-  DUMMY_USERS.push(createdUser);
+  try {
+    await createdUser.save();
+  } catch (err) {
+    const error = new HttpError('Signing up failed.', 500);
+    return next(error);
+  }
 
-  res.status(201).json({ comment: createdUser });
+  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
 
-const login = (req, res, next) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const identifiedUser = DUMMY_USERS.find(u => u.email === email);
-  if (!identifiedUser || identifiedUser.password !== password) {
-    throw new HttpError('Log in failed.', 401);
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (err) {
+    const error = new HttpError('Logging in failed.', 500);
+    return next(error);
+  }
+
+  if (!existingUser || existingUser.password !== password) {
+    const error = new HttpError('Invalid credentials.', 401);
+    return next(error);
   }
 
   res.json({ message: 'Log in successfully.' });
 };
 
-const updateUser = (req, res, next) => {
+const updateUser = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs.', 422);
+    const error = new HttpError('Invalid inputs.', 422);
+    return next(error);
   }
 
   const {
@@ -90,26 +132,106 @@ const updateUser = (req, res, next) => {
   } = req.body;
   const userId = req.params.uid;
 
-  const updatedUser = { ...DUMMY_USERS.find(u => u.uid === userId) };
-  const userIndex = DUMMY_USERS.findIndex(u => u.uid === userId);
-  updatedUser.username = username;
-  updatedUser.password = password;
-  updatedUser.email = email;
-  updatedUser.avatar = avatar;
-
-  DUMMY_USERS[userIndex] = updatedUser;
-
-  res.status(200).json({ user: updatedUser });
-};
-
-const deleteUser = (req, res, next) => {
-  const userId = req.params.uid;
-  if (!DUMMY_USERS.find(u => u.id === userId)) {
-    throw new HttpError('No user found.', 404);
+  let user;
+  try {
+    user = await User.findOne({ uid: userId });
+  } catch (err) {
+    const error = new HttpError('Updating user failed.', 500);
+    return next(error);
   }
 
-  DUMMY_USERS = DUMMY_USERS.filter(u => u.uid !== userId);
-  res.status(200).json({ message: 'Delete comment.' });
+  if (!user) {
+    const error = new HttpError('No user found.', 404);
+    return next(error);
+  }
+
+  // Check existing mail
+  let existingEmail;
+  try {
+    existingEmail = await User.findOne({ $and: [{ email }, { $nor: [{ uid: userId }] }] });
+  } catch (err) {
+    const error = new HttpError('Updating failed.', 500);
+    return next(error);
+  }
+
+  if (existingEmail) {
+    const error = new HttpError('Email exists already.', 422);
+    return next(error);
+  }
+
+  // Check existing username
+  let existingUsername;
+  try {
+    existingUsername = await User.findOne({ $and: [{ username }, { $nor: [{ uid: userId }] }] });
+  } catch (err) {
+    const error = new HttpError('Updating failed.', 500);
+    return next(error);
+  }
+
+  if (existingUsername) {
+    const error = new HttpError('Username exists already.', 422);
+    return next(error);
+  }
+
+  user.username = username;
+  user.password = password;
+  user.email = email;
+  user.avatar = avatar;
+
+  try {
+    await user.save();
+  } catch (err) {
+    const error = new HttpError('Update user failed.', 500);
+    return next(error);
+  }
+
+  res.status(200).json({ user: user.toObject({ getters: true }) });
+};
+
+const deleteUser = async (req, res, next) => {
+  // getUserByUid
+  const userId = req.params.uid;
+
+  let user;
+  try {
+    user = await User.findOne({ uid: userId });
+  } catch (err) {
+    const error = new HttpError('Delete user failed.', 500);
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError('No user found.', 404);
+    return next(error);
+  }
+
+  // getCommentsByUid
+  let comments;
+  // No need to check !comments
+  try {
+    comments = await Comment.find({ uid: userId });
+  } catch (err) {
+    const error = new HttpError('Could not find comments.', 500);
+    return next(error);
+  }
+
+  try {
+    // Deleting user and its comments must be both completed
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await user.remove({ session: sess });
+
+    const promiseArray = [];
+    comments.forEach(comment => promiseArray.push(comment.remove({ session: sess })));
+    await Promise.all(promiseArray);
+
+    await sess.commitTransaction();
+  } catch (err) {
+    const error = new HttpError('Delete user failed.', 500);
+    return next(error);
+  }
+
+  res.status(200).json({ message: 'Deleted user.' });
 };
 
 exports.getUsers = getUsers;

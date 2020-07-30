@@ -23,3 +23,4 @@ https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-gui
 * Add POST routes to create comment and user. `uuid` is used to create a unique uid for the user.
 * Add PATCH routes to update and DELETE routes to delete.
 * Add validations for request bodies by using `express-validator`.
+* Routing, links, and the basis of a CRUD schema (based on Mongoose) are established. MongoDB is used as the database to store three collections `places`, `comments`, and `users`. Mongoose is used to operate the database. The schemas and models are created. `mongoose-unique-validator` is used to help the validation where necessary.
