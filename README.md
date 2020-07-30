@@ -24,3 +24,13 @@ https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-gui
 * Add PATCH routes to update and DELETE routes to delete.
 * Add validations for request bodies by using `express-validator`.
 * Routing, links, and the basis of a CRUD schema (based on Mongoose) are established. MongoDB is used as the database to store three collections `places`, `comments`, and `users`. Mongoose is used to operate the database. The schemas and models are created. `mongoose-unique-validator` is used to help the validation where necessary.
+* MongoDB Atlas is used to as the cloud database. A local hosted database is also setup for development. The backend is connected with MongoDB. Some scripts in the `scripts` folder are used to populate dummy data (e.g., Mockaroo) for testing. Note: The transaction related code in `users-controllers.js` works well for cloud MongoDB, but not for the local database. (https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-guide/learn/lecture/16929028#questions/8687580) Comment out code parts when using local database at the development stage. However, is will be OK after deploying to the cloud.
+* The CRUD module containing the main functionality is added. The `GET`, `POST`, `PATCH`, and `DELETE` methods work well to make any queries or mutations. The screenshots to show part of backend API links and HTTP methods from Postman are shown below.
+
+![postman_1.png](/readme_images/postman_1.png)
+
+![postman_2.png](/readme_images/postman_2.png)
+
+![postman_3.png](/readme_images/postman_3.png)
+
+![postman_4.png](/readme_images/postman_4.png)
