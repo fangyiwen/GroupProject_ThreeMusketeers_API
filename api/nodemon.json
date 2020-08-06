@@ -1,0 +1,5 @@
+{
+  "env": {
+    "DB_SERVER": "mongodb+srv://myatlasuser:P1LpC0IAnIL128vt@cluster0.cte3n.mongodb.net/explore_world_heritage_sites?retryWrites=true&w=majority"
+  }
+}

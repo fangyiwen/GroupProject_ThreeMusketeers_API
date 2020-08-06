@@ -115,4 +115,25 @@ You will also see any lint errors in the console.
 ---
 
 ## Iteration 2
-Work in Progress ...
+**Contribution**
+* Yiwen Fang: Deployment of API and database to perform CRUD operation on cloud.
+* Dong Liu: UI, routing, and link.
+* Peng Hao: UI, routing, and link.
+
+### API Update
+* THE CRUD methods include
+    * GET: `/api/places/`
+    * GET: `/api/places/:pid`
+    * GET: `/api/comments/`
+    * GET: `/api/comments/places/:pid`
+    * GET: `/api/comments/users/:uid`
+    * POST: `/api/comments/places/:pid`
+    * PATCH: `/api/comments/:cid`
+    * DELETE: `/api/comments/:cid`
+    * GET: `/api/users/`
+    * GET: `/api/users/:uid`
+    * POST: `/api/users/signup`
+    * POST: `/api/users/login`
+    * PATCH: `/api/users/:uid`
+    * DELETE: `/api/users/:uid`
+* Set up the environment variables for API to be ready for deployment to Heroku.
