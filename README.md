@@ -29,6 +29,48 @@ https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-gui
 
 # Iterations
 
+## Iteration 2
+**Contribution**
+* Yiwen Fang: Deployment of API and database to perform CRUD operation on cloud.
+* Dong Liu: UI, routing, and link.
+* Peng Hao: UI, routing, and link.
+
+Heroku API link: https://hidden-eyrie-27854.herokuapp.com/
+
+Deployment API repo link: https://github.ccs.neu.edu/yiwenfang/Deploy_GroupProject_ThreeMusketeers_API
+
+### API Update
+* THE CRUD methods include
+    * GET: `/api/places/`
+    * GET: `/api/places/:pid`
+    * GET: `/api/comments/`
+    * GET: `/api/comments/places/:pid`
+    * GET: `/api/comments/users/:uid`
+    * POST: `/api/comments/places/:pid`
+    * PATCH: `/api/comments/:cid`
+    * DELETE: `/api/comments/:cid`
+    * GET: `/api/users/`
+    * GET: `/api/users/:uid`
+    * POST: `/api/users/signup`
+    * POST: `/api/users/login`
+    * PATCH: `/api/users/:uid`
+    * DELETE: `/api/users/:uid`
+* Set up the environment variables for API to be ready for deployment to Heroku.
+* API has been deployed to Heroku https://hidden-eyrie-27854.herokuapp.com/.
+* The `GET`, `POST`, `PATCH`, and `DELETE` methods work well on Heroku. The screenshots to show part of backend API links on Heroku and HTTP methods from Postman are shown below.
+
+![postman_5.png](/readme_images/postman_5.png)
+
+![postman_6.png](/readme_images/postman_6.png)
+
+![postman_7.png](/readme_images/postman_7.png)
+
+![postman_8.png](/readme_images/postman_8.png)
+
+
+---
+
+
 ## Iteration 1
 **Contribution**
 * Yiwen Fang: API, database, and CRUD schema/method.
@@ -111,29 +153,3 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
-
----
-
-## Iteration 2
-**Contribution**
-* Yiwen Fang: Deployment of API and database to perform CRUD operation on cloud.
-* Dong Liu: UI, routing, and link.
-* Peng Hao: UI, routing, and link.
-
-### API Update
-* THE CRUD methods include
-    * GET: `/api/places/`
-    * GET: `/api/places/:pid`
-    * GET: `/api/comments/`
-    * GET: `/api/comments/places/:pid`
-    * GET: `/api/comments/users/:uid`
-    * POST: `/api/comments/places/:pid`
-    * PATCH: `/api/comments/:cid`
-    * DELETE: `/api/comments/:cid`
-    * GET: `/api/users/`
-    * GET: `/api/users/:uid`
-    * POST: `/api/users/signup`
-    * POST: `/api/users/login`
-    * PATCH: `/api/users/:uid`
-    * DELETE: `/api/users/:uid`
-* Set up the environment variables for API to be ready for deployment to Heroku.
