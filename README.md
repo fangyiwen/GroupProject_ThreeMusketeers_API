@@ -31,9 +31,21 @@ https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-gui
 
 ## Iteration 2
 **Contribution**
-* Yiwen Fang: Deployment of API to perform CRUD operation on cloud and deploy UI.
-* Dong Liu: UI, routing, and link.
-* Peng Hao: UI, routing, and link.
+Contributions:
+
+**Yiwen Fang:**
+* API implementation including CRUD schema/method and routing.
+* MongoDB database setup and connection to API.
+* API and UI deployment to Heroku.
+
+**Dong Liu:**
+* React App of UI setup.
+* Routing, Home page and View maps page
+* Mapbox API implementation.
+
+**Peng Hao:**
+* Routing, All users page, Comments page, and login/logout.
+* Google Maps API and Google authentication implementation.
 
 Heroku API link: https://hidden-eyrie-27854.herokuapp.com/
 
