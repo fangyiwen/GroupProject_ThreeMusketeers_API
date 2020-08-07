@@ -31,13 +31,17 @@ https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-gui
 
 ## Iteration 2
 **Contribution**
-* Yiwen Fang: Deployment of API and database to perform CRUD operation on cloud.
+* Yiwen Fang: Deployment of API to perform CRUD operation on cloud and deploy UI.
 * Dong Liu: UI, routing, and link.
 * Peng Hao: UI, routing, and link.
 
 Heroku API link: https://hidden-eyrie-27854.herokuapp.com/
 
+Heroku UI link: https://arcane-chamber-77890.herokuapp.com/home
+
 Deployment API repo link: https://github.ccs.neu.edu/yiwenfang/Deploy_GroupProject_ThreeMusketeers_API
+
+Deployment UI repo link: https://github.ccs.neu.edu/yiwenfang/Deploy_GroupProject_ThreeMusketeers_UI
 
 ### API Update
 * THE CRUD methods include
@@ -66,6 +70,27 @@ Deployment API repo link: https://github.ccs.neu.edu/yiwenfang/Deploy_GroupProje
 ![postman_7.png](/readme_images/postman_7.png)
 
 ![postman_8.png](/readme_images/postman_8.png)
+
+### UI Update
+Heroku Deployment Link (full functionality and connection to backend to be added in iteration 3):
+
+https://arcane-chamber-77890.herokuapp.com/home
+
+![pic1](https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_ThreeMusketeers_UI/blob/master/src/shared/components/UIElements/images/screenshot-itr2-1.png)
+
+![pic2](https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_ThreeMusketeers_UI/blob/master/src/shared/components/UIElements/images/screenshot-itr2-2.png)
+
+![pic3](https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_ThreeMusketeers_UI/blob/master/src/shared/components/UIElements/images/screenshot-itr2-3.png)
+
+![pic4](https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_ThreeMusketeers_UI/blob/master/src/shared/components/UIElements/images/screenshot-itr2-4.png)
+
+![pic5](https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_ThreeMusketeers_UI/blob/master/src/shared/components/UIElements/images/screenshot-itr2-5.png)
+
+- Add Users page with userList and UserItem components to store user data, including name, e-mail, password and images. A read-only review is presented for users who are logged out. After log in, user will be able to update their collection of various sites.
+- Google Maps API is introduced in single site view. Custom form input component is added for authenticated users to edit site information.
+- Add UserPlaces page for authorized users to access their individual database, and perform CRUD operations on heritage sites of interest.
+- Add Place and Update Place pages are added for user to add selected heritage site.
+- Note: It is better to build the UI and then user `"start": "serve -s build"` to serve the static files instead to run `react-scripts start` on Heroku.
 
 
 ---
