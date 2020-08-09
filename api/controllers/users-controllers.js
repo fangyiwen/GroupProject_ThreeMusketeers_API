@@ -51,7 +51,7 @@ const signup = async (req, res, next) => {
 
   // uid is not extracted from req.body since uuid() will allocate one
   const {
-    username, password, email, avatar, createTime,
+    username, password, email, createTime,
   } = req.body;
 
   // Check existing mail
@@ -88,18 +88,26 @@ const signup = async (req, res, next) => {
     password,
     email,
     avatar: req.file.path,
-    createTime,
+    createTime: getCreateTime()
   });
 
   try {
+    console.log(createdUser);
+    console.log("creating new user");
     await createdUser.save();
   } catch (err) {
+    console.log(err);
+    console.log("fail to save new user");
     const error = new HttpError('Signing up failed.', 500);
     return next(error);
   }
 
   res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
+
+function getCreateTime(){
+  return Date.now().toString();
+}
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;

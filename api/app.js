@@ -14,13 +14,27 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
+
+// handle CORS
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+
+  next();
+});
+
 app.use('/api/places', placesRoutes);
 
 app.use('/api/users', usersRoutes);
 
 app.use('/api/comments', commentsRoutes);
 
-app.use('/uploads/images', express.static(path.join('uploads', 'images')));
+
 
 app.use((req, res, next) => {
   throw new HttpError('No route found.', 404);
@@ -28,7 +42,7 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
   if (req.file) {
-    fs.unlink(req.file.path, err => {
+    fs.unlink(req.file.path, (err) => {
       console.log(err);
     });
   }
@@ -43,7 +57,8 @@ app.use((error, req, res, next) => {
 // Local MongoDB URI: mongodb://localhost/explore_world_heritage_sites
 // MongoDB Atlas URI: mongodb+srv://myatlasuser:P1LpC0IAnIL128vt@cluster0.cte3n.mongodb.net/explore_world_heritage_sites?retryWrites=true&w=majority
 mongoose
-  .connect(`${process.env.DB_SERVER}`, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+  .connect('mongodb+srv://myatlasuser:P1LpC0IAnIL128vt@cluster0.cte3n.mongodb.net/explore_world_heritage_sites?retryWrites=true&w=majority',
+    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
   .then(() => {
     app.listen(process.env.PORT || 5000);
   })

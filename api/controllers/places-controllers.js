@@ -1,4 +1,3 @@
-import {validationResult} from "express-validator";
 
 const HttpError = require('../models/http-error');
 const Place = require('../models/place');
@@ -39,7 +38,7 @@ const getPlaceByPid = async (req, res, next) => {
   res.json({ place: place.toObject({ getters: true }) });
 };
 
-//todo: add create place function
+// todo: add create place function
 
 
 exports.getPlaces = getPlaces;

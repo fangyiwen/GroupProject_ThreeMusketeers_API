@@ -12,7 +12,7 @@ router.get('/:pid', placesControllers.getPlaceByPid);
 
 router.post(
   '/',
-  fileUpload.single('image'),
+  fileUpload.single('avatar'),
   [
     check('title')
       .not()
@@ -20,9 +20,9 @@ router.post(
     check('description').isLength({ min: 5 }),
     check('address')
       .not()
-      .isEmpty()
+      .isEmpty(),
   ],
-  placesControllers.createPlace
+  // placesControllers.createPlace
 );
 
 module.exports = router;
