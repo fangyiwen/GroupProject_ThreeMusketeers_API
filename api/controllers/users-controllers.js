@@ -87,7 +87,7 @@ const signup = async (req, res, next) => {
     username,
     password,
     email,
-    avatar,
+    avatar: req.file.path,
     createTime,
   });
 

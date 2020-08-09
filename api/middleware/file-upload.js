@@ -1,10 +1,10 @@
 const multer = require('multer');
-const uuid = require('uuid/v1');
+const uuid = require('uuid');
 
 const MIME_TYPE_MAP = {
-    'image/png': 'png',
-    'image/jpeg': 'jpeg',
-    'image/jpg': 'jpg'
+    'avatar/png': 'png',
+    'avatar/jpeg': 'jpeg',
+    'avatar/jpg': 'jpg'
 };
 
 const fileUpload = multer({
