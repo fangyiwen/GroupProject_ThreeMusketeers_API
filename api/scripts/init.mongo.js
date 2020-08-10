@@ -26084,3 +26084,4 @@ print('Inserted', count, 'users');
 db.comments.insertMany(commentsDB);
 count = db.comments.count();
 print('Inserted', count, 'comments');
+

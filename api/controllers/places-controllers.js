@@ -38,8 +38,6 @@ const getPlaceByPid = async (req, res, next) => {
   res.json({ place: place.toObject({ getters: true }) });
 };
 
-// todo: add create place function
-
 
 exports.getPlaces = getPlaces;
 exports.getPlaceByPid = getPlaceByPid;

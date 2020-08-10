@@ -10,7 +10,7 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   avatar: { type: String, required: true },
   createTime: { type: String, required: true },
-  places: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Place' }]
+  places: [{ type: mongoose.Types.ObjectId, required: true, ref: 'CustomPlace' }]
 });
 
 userSchema.plugin(uniqueValidator);
