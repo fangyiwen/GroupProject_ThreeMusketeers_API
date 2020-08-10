@@ -125,7 +125,10 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ message: 'Log in successfully.' });
+  res.json({
+    message: 'Log in successfully.' ,
+    user: existingUser.toObject({ getters: true })
+  });
 };
 
 const updateUser = async (req, res, next) => {
