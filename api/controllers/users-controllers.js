@@ -16,7 +16,7 @@ const getUsers = async (req, res, next) => {
   }
 
   if (!users || users.length === 0) {
-    const error = new HttpError('No places found.', 404);
+    const error = new HttpError('No users found.', 404);
     return next(error);
   }
 
@@ -88,7 +88,8 @@ const signup = async (req, res, next) => {
     password,
     email,
     avatar: req.file.path,
-    createTime: getCreateTime()
+    createTime: getCreateTime(),
+    places: []
   });
 
   try {
