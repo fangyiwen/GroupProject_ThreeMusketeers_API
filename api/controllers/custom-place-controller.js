@@ -90,8 +90,7 @@ const createPlace = async (req, res, next) => {
     console.log("this is the createdPlace info:" + createdPlace);
     let user;
     try {
-        user = await User.findOne();
-        //user = await User.findById(creator);
+        user = await User.findById(creator);
 
         console.log("this is the user info from try block:" + user);
     } catch (err) {
@@ -123,6 +122,7 @@ const createPlace = async (req, res, next) => {
         await user.save({ session: sess });
         await sess.commitTransaction();
     } catch (err) {
+        console.log(err);
         const error = new HttpError(
             'Creating place failed, please try again.',
             500
