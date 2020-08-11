@@ -25,4 +25,17 @@ router.post(
     customPlacesControllers.createPlace
 );
 
+router.patch(
+    '/:pid',
+    [
+        check('title')
+            .not()
+            .isEmpty(),
+        check('description').isLength({ min: 5 })
+    ],
+    customPlacesControllers.updatePlace
+);
+
+router.delete('/:pid', customPlacesControllers.deletePlace);
+
 module.exports = router;

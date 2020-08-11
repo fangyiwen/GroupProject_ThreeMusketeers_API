@@ -35,6 +35,7 @@ const getPlaceById = async (req, res, next) => {
 
 const getPlacesByUserId = async (req, res, next) => {
     const userId = req.params.uid;
+    console.log(userId);
 
     // let places;
     let userWithPlaces;
@@ -55,6 +56,7 @@ const getPlacesByUserId = async (req, res, next) => {
         );
     }
 
+    console.log(userWithPlaces.places);
     res.json({
         places: userWithPlaces.places.map(place =>
             place.toObject({ getters: true })
@@ -85,7 +87,7 @@ const createPlace = async (req, res, next) => {
         address,
         location: coordinates,
         image: req.file.path,
-        creator: '5f22b8101bd2d2d4c124e7af'
+        creator
     });
     console.log("this is the createdPlace info:" + createdPlace);
     let user;
