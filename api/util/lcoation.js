@@ -5,20 +5,28 @@ const HttpError = require('../models/http-error');
 const API_KEY = 'AIzaSyB2GEsGixSm9xrawPeXgzMmfoGjCkRS2WA';
 
 async function getCoordsForAddress(address) {
-    return {
-        lat: 40.7484474,
-        lng: -73.9871516
-    };
+
     console.log('starting get coordinates');
     console.log(encodeURIComponent(address));
-    const response = await axios.get(
+    let response;
+    try {
+        response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+            address
+        )}&key=${API_KEY}`);
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+        console.error(error);
+    }
+
+    /*const response = await axios.get(
             `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
                 address
             )}&key=${API_KEY}`
     );
-
     console.log('get response');
-
+    console.log(response);
+                        */
     const data = response.data;
 
 
