@@ -5,10 +5,13 @@ const customPlacesControllers = require('../controllers/custom-place-controller'
 
 const router = express.Router();
 const fileUpload = require('../middleware/file-upload');
+const checkAuth = require('../middleware/check-auth');
 
 router.get('/user/:uid', customPlacesControllers.getPlacesByUserId);
 
 router.get('/:pid', customPlacesControllers.getPlaceById);
+
+router.use(checkAuth);
 
 router.post(
   '/',

@@ -14,8 +14,8 @@ router.post('/signup', fileUpload.single('avatar'), [check('username').not().isE
 
 router.post('/login', [check('email').normalizeEmail().isEmail(), check('password').not().isEmpty()], usersControllers.login);
 
-router.patch('/:uid', [check('username').not().isEmpty(), check('email').normalizeEmail().isEmail(), check('password').not().isEmpty()], usersControllers.updateUser);
-
-router.delete('/:uid', usersControllers.deleteUser);
+// router.patch('/:uid', [check('username').not().isEmpty(), check('email').normalizeEmail().isEmail(), check('password').not().isEmpty()], usersControllers.updateUser);
+//
+// router.delete('/:uid', usersControllers.deleteUser);
 
 module.exports = router;

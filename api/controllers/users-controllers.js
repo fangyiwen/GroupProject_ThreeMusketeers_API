@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
@@ -103,7 +104,24 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
+  let token;
+  try {
+    token = jwt.sign(
+      { userId: createdUser.uid, email: createdUser.email },
+      'supersecret_dont_share',
+      { expiresIn: '1h' },
+    );
+  } catch (err) {
+    const error = new HttpError(
+      'Signing up failed.',
+      500,
+    );
+    return next(error);
+  }
+
+  res.status(201).json({
+    user: createdUser.toObject({ getters: true }), userId: createdUser.uid, email: createdUser.email, token,
+  });
 };
 
 function getCreateTime() {
@@ -126,9 +144,27 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
+  let token;
+  try {
+    token = jwt.sign(
+      { userId: existingUser.uid, email: existingUser.email },
+      'supersecret_dont_share',
+      { expiresIn: '1h' },
+    );
+  } catch (err) {
+    const error = new HttpError(
+      'Logging in failed.',
+      500,
+    );
+    return next(error);
+  }
+
   res.json({
     message: 'Log in successfully.',
     user: existingUser.toObject({ getters: true }),
+    userId: existingUser.uid,
+    email: existingUser.email,
+    token,
   });
 };
 
