@@ -107,7 +107,7 @@ const signup = async (req, res, next) => {
   let token;
   try {
     token = jwt.sign(
-      { userId: createdUser.uid, email: createdUser.email },
+      { userId: createdUser.id, email: createdUser.email },
       'supersecret_dont_share',
       { expiresIn: '1h' },
     );
@@ -120,7 +120,7 @@ const signup = async (req, res, next) => {
   }
 
   res.status(201).json({
-    user: createdUser.toObject({ getters: true }), userId: createdUser.uid, email: createdUser.email, token,
+    user: createdUser.toObject({ getters: true }), userId: createdUser.id, email: createdUser.email, token,
   });
 };
 
@@ -140,14 +140,14 @@ const login = async (req, res, next) => {
   }
 
   if (!existingUser || existingUser.password !== password) {
-    const error = new HttpError('Invalid credentials.', 401);
+    const error = new HttpError('Invalid credentials.', 403);
     return next(error);
   }
 
   let token;
   try {
     token = jwt.sign(
-      { userId: existingUser.uid, email: existingUser.email },
+      { userId: existingUser.id, email: existingUser.email },
       'supersecret_dont_share',
       { expiresIn: '1h' },
     );
@@ -162,7 +162,7 @@ const login = async (req, res, next) => {
   res.json({
     message: 'Log in successfully.',
     user: existingUser.toObject({ getters: true }),
-    userId: existingUser.uid,
+    userId: existingUser.id,
     email: existingUser.email,
     token,
   });
