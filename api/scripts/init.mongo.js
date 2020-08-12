@@ -864,5 +864,5 @@ whc.forEach((wh) => {
 });
 
 db.places.insertMany(placesDB);
-let count = db.places.count();
+const count = db.places.count();
 print('Inserted', count, 'places');

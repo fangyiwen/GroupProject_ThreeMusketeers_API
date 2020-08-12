@@ -89,16 +89,16 @@ const signup = async (req, res, next) => {
     email,
     avatar: req.file.path,
     createTime: getCreateTime(),
-    places: []
+    places: [],
   });
 
   try {
     console.log(createdUser);
-    console.log("creating new user");
+    console.log('creating new user');
     await createdUser.save();
   } catch (err) {
     console.log(err);
-    console.log("fail to save new user");
+    console.log('fail to save new user');
     const error = new HttpError('Signing up failed.', 500);
     return next(error);
   }
@@ -106,7 +106,7 @@ const signup = async (req, res, next) => {
   res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
 
-function getCreateTime(){
+function getCreateTime() {
   return Date.now().toString();
 }
 
@@ -127,8 +127,8 @@ const login = async (req, res, next) => {
   }
 
   res.json({
-    message: 'Log in successfully.' ,
-    user: existingUser.toObject({ getters: true })
+    message: 'Log in successfully.',
+    user: existingUser.toObject({ getters: true }),
   });
 };
 

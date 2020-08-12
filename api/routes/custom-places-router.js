@@ -11,29 +11,29 @@ router.get('/user/:uid', customPlacesControllers.getPlacesByUserId);
 router.get('/:pid', customPlacesControllers.getPlaceById);
 
 router.post(
-    '/',
-    fileUpload.single('image'),
-    [
-        check('title')
-            .not()
-            .isEmpty(),
-        check('description').isLength({ min: 5 }),
-        check('address')
-            .not()
-            .isEmpty(),
-    ],
-    customPlacesControllers.createPlace
+  '/',
+  fileUpload.single('image'),
+  [
+    check('title')
+      .not()
+      .isEmpty(),
+    check('description').isLength({ min: 5 }),
+    check('address')
+      .not()
+      .isEmpty(),
+  ],
+  customPlacesControllers.createPlace,
 );
 
 router.patch(
-    '/:pid',
-    [
-        check('title')
-            .not()
-            .isEmpty(),
-        check('description').isLength({ min: 5 })
-    ],
-    customPlacesControllers.updatePlace
+  '/:pid',
+  [
+    check('title')
+      .not()
+      .isEmpty(),
+    check('description').isLength({ min: 5 }),
+  ],
+  customPlacesControllers.updatePlace,
 );
 
 router.delete('/:pid', customPlacesControllers.deletePlace);
