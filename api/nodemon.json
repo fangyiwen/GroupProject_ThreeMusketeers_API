@@ -1,6 +1,7 @@
 {
   "env": {
-    "DB_SERVER": "mongodb+srv://myatlasuser:P1LpC0IAnIL128vt@cluster0.cte3n.mongodb.net/explore_world_heritage_sites?retryWrites=true&w=majority",
-    "GOOGLE_API_KEY": "AIzaSyB2GEsGixSm9xrawPeXgzMmfoGjCkRS2WA"
+    "DB_SERVER": "mongodb+srv://myatlasuser:P1LpC0IAnIL128vt@cluster0.cte3n.mongodb.net/cs5610_iteration3?retryWrites=true&w=majority",
+    "GOOGLE_API_KEY": "AIzaSyB2GEsGixSm9xrawPeXgzMmfoGjCkRS2WA",
+    "JWT_KEY": "supersecret_dont_share"
   }
 }

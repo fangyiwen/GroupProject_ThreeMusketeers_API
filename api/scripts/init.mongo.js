@@ -13,7 +13,7 @@ scripts/init.mongo.js
 
 // Run command:
 // mongo explore_world_heritage_sites scripts/init.mongo.js
-// mongo mongodb+srv://myatlasuser:P1LpC0IAnIL128vt@cluster0.cte3n.mongodb.net/explore_world_heritage_sites scripts/init.mongo.js
+// mongo mongodb+srv://myatlasuser:P1LpC0IAnIL128vt@cluster0.cte3n.mongodb.net/cs5610_iteration3 scripts/init.mongo.js
 
 /* global db print */
 /* eslint no-restricted-globals: "off" */
