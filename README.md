@@ -76,15 +76,15 @@ The grid picture view of World Heritage Sites (part of)
 
 ![iteration3_3.png](/readme_images/iteration3_3.png)
 
-The detailed view of one sign site including the name, introduction, location map, date inscribed, country/region, coordinates, and link.
+The detailed view of one sign site including the name, introduction, location map, date inscribed, country/region, coordinates, and link
 
 ![iteration3_4.png](/readme_images/iteration3_4.png)
 
-A grid view of all users registered on the website.
+A grid view of all users registered on the website
 
 ![iteration3_5.png](/readme_images/iteration3_5.png)
 
-The site pages with map locations created by a specific user.
+The site pages with map locations created by a specific user
 
 ![iteration3_6.png](/readme_images/iteration3_6.png)
 
@@ -96,15 +96,15 @@ Sign up/Login pages to create/login a user
 
 ![iteration3_9.png](/readme_images/iteration3_9.png)
 
-Create a new site page by a logged in user.
+Create a new site page by a logged in user
 
 ![iteration3_10.png](/readme_images/iteration3_10.png)
 
-The site pages created by the logged in user.
+The site pages created by the logged in user
 
 ![iteration3_11.png](/readme_images/iteration3_11.png)
 
-Edit and Delete are only permitted by the creator.
+Edit and Delete are only permitted by the creator
 
 ![iteration3_12.png](/readme_images/iteration3_12.png)
 
