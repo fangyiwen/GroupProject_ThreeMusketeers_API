@@ -45,7 +45,7 @@ https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-gui
 **Dong Liu:**
 * Finishing Home page, View Maps page, and Mapbox API implementation.
 * Testing and operating the website on cloud.
-* Debug of frontend and backend
+* Debug of frontend and backend.
 * UI design of the web.
 
 **Peng Hao:**
