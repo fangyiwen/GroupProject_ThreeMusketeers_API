@@ -8,7 +8,9 @@ Team Name: Three Musketeers
 
 Team members: Yiwen Fang, Dong Liu, Peng Hao
 
-Website: https://three-musketeers-ui.herokuapp.com
+Website (Heroku UI): https://three-musketeers-ui.herokuapp.com
+
+Heroku API link: https://three-musketeers-api.herokuapp.com
 
 (This) API repo link: https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_ThreeMusketeers_API
 
